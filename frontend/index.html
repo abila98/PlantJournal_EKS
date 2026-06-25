@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌿 Plant Journal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f7f0;
+      color: #1a2e1a;
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────── */
+    header {
+      background: #1e4d2b;
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-icon {
+      font-size: 1.5rem;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #90c99a;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .api-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #163820;
+      color: #90c99a;
+      border: 1px solid #2d6b3a;
+      transition: all 0.3s;
+    }
+
+    /* ── Hero ─────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1e4d2b 0%, #2d7a3a 50%, #3a9b4a 100%);
+      padding: 52px 40px 44px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "🌿🌸🌱🍃🌺🌻🌾🌷";
+      position: absolute;
+      top: 10px; left: 0; right: 0;
+      font-size: 1.4rem;
+      opacity: 0.12;
+      letter-spacing: 24px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      color: #b8e0bf;
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    /* ── Status bar ───────────────────────────── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      font-size: 0.8rem;
+      color: #5a7a5a;
+      background: #e8f5e8;
+      border-bottom: 1px solid #c8e6c8;
+    }
+
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #aaa;
+      flex-shrink: 0;
+    }
+    .dot.green  { background: #2d9b4a; box-shadow: 0 0 6px #2d9b4a88; }
+    .dot.red    { background: #e53935; }
+    .dot.pulse  { animation: pulse 1.6s infinite; background: #2d9b4a; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    /* ── Grid ─────────────────────────────────── */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #4a7a4a;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── Plant card ───────────────────────────── */
+    .card {
+      background: #fff;
+      border: 1px solid #d4ecd4;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(30,77,43,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(30,77,43,0.13);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #e8f5e8;
+      display: block;
+    }
+
+    .card-img-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #c8e6c8, #e8f5e8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .card-body {
+      padding: 18px 20px 20px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .tag-flower  { background: #fde8f0; color: #c2185b; }
+    .tag-herb    { background: #e8f5e0; color: #388e3c; }
+    .tag-tree    { background: #e8f0fe; color: #1565c0; }
+    .tag-shrub   { background: #fff8e1; color: #f57f17; }
+    .tag-default { background: #f0f0f0; color: #555; }
+
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a2e1a;
+      margin-bottom: 6px;
+    }
+
+    .card-latin {
+      font-size: 0.78rem;
+      font-style: italic;
+      color: #7a9a7a;
+      margin-bottom: 10px;
+    }
+
+    .card-notes {
+      font-size: 0.83rem;
+      color: #4a6a4a;
+      line-height: 1.55;
+    }
+
+    /* ── Skeleton ─────────────────────────────── */
+    .skeleton-card {
+      background: #fff;
+      border: 1px solid #d4ecd4;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .sk { background: #e8f5e8; border-radius: 6px; animation: shimmer 1.4s infinite; }
+    @keyframes shimmer { 0%,100%{opacity:.5} 50%{opacity:1} }
+    .sk-img  { height: 200px; border-radius: 0; width: 100%; }
+    .sk-body { padding: 18px 20px; }
+    .sk-tag  { height: 20px; width: 60px;  margin-bottom: 12px; }
+    .sk-h    { height: 18px; width: 70%;   margin-bottom: 8px; }
+    .sk-l    { height: 13px; width: 50%;   margin-bottom: 12px; }
+    .sk-p1   { height: 11px; width: 100%;  margin-bottom: 6px; }
+    .sk-p2   { height: 11px; width: 80%; }
+
+    /* ── Error ────────────────────────────────── */
+    .error-wrap {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .error-icon { font-size: 3rem; margin-bottom: 16px; }
+    .error-title { font-size: 1.1rem; font-weight: 700; color: #c62828; }
+    .error-msg { margin-top: 8px; font-size: 0.85rem; color: #7a7a7a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">🌿</span>
+    <div>
+      <div>Plant Journal</div>
+      <div class="logo-sub">My personal green collection</div>
+    </div>
+  </div>
+  <div class="api-badge" id="api-badge">connecting…</div>
+</header>
+
+<div class="hero">
+  <h1>My Plant Collection 🌱</h1>
+  <p>All the plants and flowers I've learned from my gardener friends</p>
+</div>
+
+<div class="status-bar">
+  <div class="dot pulse" id="status-dot"></div>
+  <span id="status-text">Fetching plants from the database…</span>
+</div>
+
+<div class="container">
+  <div class="section-label" id="section-label">Loading…</div>
+  <div class="grid" id="plant-grid">
+    <!-- skeleton cards -->
+    <div class="skeleton-card">
+      <div class="sk sk-img"></div>
+      <div class="sk-body">
+        <div class="sk sk-tag"></div>
+        <div class="sk sk-h"></div>
+        <div class="sk sk-l"></div>
+        <div class="sk sk-p1"></div>
+        <div class="sk sk-p2"></div>
+      </div>
+    </div>
+    <div class="skeleton-card">
+      <div class="sk sk-img"></div>
+      <div class="sk-body">
+        <div class="sk sk-tag"></div>
+        <div class="sk sk-h"></div>
+        <div class="sk sk-l"></div>
+        <div class="sk sk-p1"></div>
+        <div class="sk sk-p2"></div>
+      </div>
+    </div>
+    <div class="skeleton-card">
+      <div class="sk sk-img"></div>
+      <div class="sk-body">
+        <div class="sk sk-tag"></div>
+        <div class="sk sk-h"></div>
+        <div class="sk sk-l"></div>
+        <div class="sk sk-p1"></div>
+        <div class="sk sk-p2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const tagClass = {
+    flower: 'tag-flower',
+    herb:   'tag-herb',
+    tree:   'tag-tree',
+    shrub:  'tag-shrub',
+  };
+
+  const tagEmoji = {
+    flower: '🌸',
+    herb:   '🌿',
+    tree:   '🌳',
+    shrub:  '🌱',
+  };
+
+  async function loadPlants() {
+    const grid   = document.getElementById('plant-grid');
+    const dot    = document.getElementById('status-dot');
+    const status = document.getElementById('status-text');
+    const badge  = document.getElementById('api-badge');
+    const label  = document.getElementById('section-label');
+
+    try {
+      const res  = await fetch('/api/plants');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      // update status
+      dot.classList.remove('pulse');
+      dot.classList.add('green');
+      status.textContent = `${data.length} plants loaded from database`;
+      badge.textContent  = '✓ API connected';
+      badge.style.background = '#163820';
+      badge.style.color      = '#6fcf7f';
+      badge.style.border     = '1px solid #2d6b3a';
+      label.textContent  = `All plants (${data.length})`;
+
+      grid.innerHTML = data.map(p => {
+        const tc = tagClass[p.tag] || 'tag-default';
+        const te = tagEmoji[p.tag] || '🌿';
+        const imgHtml = p.image_url
+          ? `<img class="card-img" src="${p.image_url}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : '';
+        const placeholderStyle = p.image_url ? 'display:none' : '';
+        return `
+          <div class="card">
+            ${imgHtml}
+            <div class="card-img-placeholder" style="${placeholderStyle}">${te}</div>
+            <div class="card-body">
+              <span class="tag ${tc}">${te} ${p.tag}</span>
+              <div class="card-name">${p.name}</div>
+              ${p.latin_name ? `<div class="card-latin">${p.latin_name}</div>` : ''}
+              <div class="card-notes">${p.notes}</div>
+            </div>
+          </div>`;
+      }).join('');
+
+    } catch (err) {
+      dot.classList.remove('pulse');
+      dot.classList.add('red');
+      status.textContent = `Could not reach backend: ${err.message}`;
+      badge.textContent  = '✗ API error';
+      badge.style.background = '#3e1a1a';
+      badge.style.color      = '#ef9a9a';
+      badge.style.border     = '1px solid #7a3a3a';
+      label.textContent = 'Error';
+
+      grid.innerHTML = `
+        <div class="error-wrap">
+          <div class="error-icon">🥀</div>
+          <div class="error-title">Could not load plants</div>
+          <div class="error-msg">${err.message}</div>
+          <div class="error-msg" style="margin-top:6px">Check that the backend container is running.</div>
+        </div>`;
+    }
+  }
+
+  loadPlants();
+</script>
+</body>
+</html>
+
