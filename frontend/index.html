@@ -1,257 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🌿 Plant Journal</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f7f0;color:#1a2e1a;min-height:100vh}
 
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f0f7f0;
-      color: #1a2e1a;
-      min-height: 100vh;
-    }
+    /* HEADER */
+    header{background:#1e4d2b;padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+    .logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:1.15rem;font-weight:700}
+    .logo-sub{font-size:.68rem;color:#90c99a;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+    .api-badge{font-size:.72rem;font-weight:600;padding:4px 12px;border-radius:20px;background:#163820;color:#90c99a;border:1px solid #2d6b3a;transition:all .3s}
 
-    /* ── Header ───────────────────────────────── */
-    header {
-      background: #1e4d2b;
-      padding: 0 40px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    }
+    /* HERO */
+    .hero{background:linear-gradient(135deg,#1e4d2b,#2d7a3a,#3a9b4a);padding:44px 32px 36px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:"🌿🌸🌱🍃🌺🌻🌾🌷";position:absolute;top:8px;left:0;right:0;font-size:1.3rem;opacity:.1;letter-spacing:22px}
+    .hero h1{font-size:2rem;font-weight:800;color:#fff;position:relative}
+    .hero p{margin-top:8px;color:#b8e0bf;font-size:.92rem;position:relative}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
+    /* STATUS */
+    .status-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:.8rem;color:#5a7a5a;background:#e8f5e8;border-bottom:1px solid #c8e6c8}
+    .dot{width:8px;height:8px;border-radius:50%;background:#aaa;flex-shrink:0}
+    .dot.green{background:#2d9b4a;box-shadow:0 0 6px #2d9b4a88}
+    .dot.red{background:#e53935}
+    .dot.pulse{animation:pulse 1.6s infinite;background:#2d9b4a}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-    .logo-icon {
-      font-size: 1.5rem;
-    }
+    /* LAYOUT */
+    .page{max-width:1200px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:340px 1fr;gap:32px;align-items:start}
+    @media(max-width:860px){.page{grid-template-columns:1fr}}
 
-    .logo-sub {
-      font-size: 0.7rem;
-      font-weight: 400;
-      color: #90c99a;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
+    /* FORM PANEL */
+    .form-panel{background:#fff;border:1px solid #c8e6c8;border-radius:16px;padding:28px;position:sticky;top:24px;box-shadow:0 2px 12px rgba(30,77,43,.07)}
+    .form-title{font-size:1rem;font-weight:700;color:#1e4d2b;margin-bottom:20px;display:flex;align-items:center;gap:8px}
 
-    .api-badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 20px;
-      background: #163820;
-      color: #90c99a;
-      border: 1px solid #2d6b3a;
-      transition: all 0.3s;
-    }
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:.75rem;font-weight:700;color:#2d6b3a;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+    .field input[type=text]{width:100%;padding:9px 12px;border:1.5px solid #c8e6c8;border-radius:8px;font-size:.88rem;color:#1a2e1a;background:#f8fdf8;transition:border-color .2s;outline:none}
+    .field input[type=text]:focus{border-color:#2d7a3a;background:#fff}
 
-    /* ── Hero ─────────────────────────────────── */
-    .hero {
-      background: linear-gradient(135deg, #1e4d2b 0%, #2d7a3a 50%, #3a9b4a 100%);
-      padding: 52px 40px 44px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+    /* PILLS */
+    .pill-group{display:flex;flex-wrap:wrap;gap:7px}
+    .pill{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;border:1.5px solid #c8e6c8;background:#f8fdf8;font-size:.78rem;font-weight:600;color:#4a7a4a;cursor:pointer;transition:all .15s;user-select:none}
+    .pill:hover{border-color:#2d7a3a;background:#e8f5e8}
+    .pill.active{background:#1e4d2b;color:#fff;border-color:#1e4d2b}
+    .season-spring.active{background:#f8d7e3;color:#c2185b;border-color:#c2185b}
+    .season-summer.active{background:#fff9c4;color:#f57f17;border-color:#f57f17}
+    .season-autumn.active{background:#ffe0b2;color:#e64a19;border-color:#e64a19}
+    .season-winter.active{background:#e3f2fd;color:#1565c0;border-color:#1565c0}
+    .water-low.active{background:#e8f5e8;color:#2e7d32;border-color:#2e7d32}
+    .water-medium.active{background:#e3f2fd;color:#1565c0;border-color:#1565c0}
+    .water-high.active{background:#e8eaf6;color:#283593;border-color:#283593}
+    .spot-pill.active{background:#f3e5f5;color:#6a1b9a;border-color:#6a1b9a}
+    .feat-pill.active{background:#e0f2f1;color:#00695c;border-color:#00695c}
 
-    .hero::before {
-      content: "🌿🌸🌱🍃🌺🌻🌾🌷";
-      position: absolute;
-      top: 10px; left: 0; right: 0;
-      font-size: 1.4rem;
-      opacity: 0.12;
-      letter-spacing: 24px;
-    }
+    /* IMAGE UPLOAD */
+    .upload-box{border:2px dashed #a5d6a7;border-radius:12px;background:#f8fdf8;padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+    .upload-box:hover,.upload-box.dragover{border-color:#2d7a3a;background:#e8f5e8}
+    .upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .upload-icon{font-size:1.8rem;margin-bottom:6px}
+    .upload-label{font-size:.82rem;color:#4a7a4a;font-weight:600}
+    .upload-sub{font-size:.72rem;color:#90b890;margin-top:3px}
 
-    .hero h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-      position: relative;
-    }
+    /* IMAGE PREVIEW */
+    .img-preview-wrap{margin-top:10px;border-radius:10px;overflow:hidden;border:1.5px solid #c8e6c8;height:160px;background:#f0f7f0;display:flex;align-items:center;justify-content:center;position:relative}
+    .img-preview-wrap img{width:100%;height:100%;object-fit:cover}
+    .img-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.8rem;color:#90b890}
+    .img-remove{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.9rem;display:none;align-items:center;justify-content:center;line-height:1}
 
-    .hero p {
-      margin-top: 10px;
-      color: #b8e0bf;
-      font-size: 0.95rem;
-      position: relative;
-    }
+    /* UPLOAD PROGRESS */
+    .upload-progress{display:none;margin-top:8px;background:#e8f5e8;border-radius:8px;padding:8px 12px;font-size:.78rem;color:#2d6b3a;font-weight:600;align-items:center;gap:8px}
+    .spinner{width:14px;height:14px;border:2px solid #a5d6a7;border-top-color:#2d7a3a;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ── Status bar ───────────────────────────── */
-    .status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px;
-      font-size: 0.8rem;
-      color: #5a7a5a;
-      background: #e8f5e8;
-      border-bottom: 1px solid #c8e6c8;
-    }
+    /* SUBMIT */
+    .btn-add{width:100%;padding:12px;background:#1e4d2b;color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:6px}
+    .btn-add:hover{background:#2d7a3a}
+    .btn-add:disabled{background:#aaa;cursor:not-allowed}
+    .form-msg{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:.82rem;font-weight:600;display:none}
+    .form-msg.success{background:#e8f5e8;color:#2e7d32;border:1px solid #a5d6a7;display:block}
+    .form-msg.error{background:#ffebee;color:#c62828;border:1px solid #ef9a9a;display:block}
 
-    .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #aaa;
-      flex-shrink: 0;
-    }
-    .dot.green  { background: #2d9b4a; box-shadow: 0 0 6px #2d9b4a88; }
-    .dot.red    { background: #e53935; }
-    .dot.pulse  { animation: pulse 1.6s infinite; background: #2d9b4a; }
+    /* GRID */
+    .section-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a7a4a;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
-    }
+    /* CARD */
+    .card{background:#fff;border:1px solid #d4ecd4;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(30,77,43,.06);transition:transform .2s,box-shadow .2s}
+    .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(30,77,43,.12)}
+    .card-img{width:100%;height:190px;object-fit:cover;display:block;background:#e8f5e8}
+    .card-img-placeholder{width:100%;height:190px;background:linear-gradient(135deg,#c8e6c8,#e8f5e8);display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+    .card-body{padding:14px 16px 16px}
+    .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+    .badge{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:20px}
+    .badge-flower{background:#fde8f0;color:#c2185b}
+    .badge-herb{background:#e8f5e0;color:#388e3c}
+    .badge-tree{background:#e8f0fe;color:#1565c0}
+    .badge-shrub{background:#fff8e1;color:#f57f17}
+    .badge-default{background:#f0f0f0;color:#555}
+    .badge-water-low{background:#e8f5e8;color:#2e7d32}
+    .badge-water-medium{background:#e3f2fd;color:#1565c0}
+    .badge-water-high{background:#e8eaf6;color:#283593}
+    .card-name{font-size:.98rem;font-weight:700;color:#1a2e1a;margin-bottom:2px}
+    .card-latin{font-size:.74rem;font-style:italic;color:#7a9a7a;margin-bottom:6px}
+    .card-meta{font-size:.75rem;color:#7a9a7a;margin-bottom:6px;display:flex;flex-wrap:wrap;gap:6px}
+    .card-notes{font-size:.8rem;color:#4a6a4a;line-height:1.5}
+    .card-seasons{font-size:.72rem;color:#888;margin-top:5px}
 
-    /* ── Grid ─────────────────────────────────── */
-    .container {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 40px 24px 60px;
-    }
+    /* SKELETON */
+    .skeleton-card{background:#fff;border:1px solid #d4ecd4;border-radius:14px;overflow:hidden}
+    .sk{background:#e8f5e8;border-radius:6px;animation:shimmer 1.4s infinite}
+    @keyframes shimmer{0%,100%{opacity:.5}50%{opacity:1}}
+    .sk-img{height:190px;border-radius:0;width:100%}
+    .sk-body{padding:14px 16px}
+    .sk-tag{height:18px;width:55px;margin-bottom:10px}
+    .sk-h{height:16px;width:68%;margin-bottom:7px}
+    .sk-l{height:12px;width:45%;margin-bottom:10px}
+    .sk-p{height:10px;width:90%;margin-bottom:5px}
 
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #4a7a4a;
-      margin-bottom: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 24px;
-    }
-
-    /* ── Plant card ───────────────────────────── */
-    .card {
-      background: #fff;
-      border: 1px solid #d4ecd4;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(30,77,43,0.06);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(30,77,43,0.13);
-    }
-
-    .card-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      background: #e8f5e8;
-      display: block;
-    }
-
-    .card-img-placeholder {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, #c8e6c8, #e8f5e8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-
-    .card-body {
-      padding: 18px 20px 20px;
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-    }
-
-    .tag-flower  { background: #fde8f0; color: #c2185b; }
-    .tag-herb    { background: #e8f5e0; color: #388e3c; }
-    .tag-tree    { background: #e8f0fe; color: #1565c0; }
-    .tag-shrub   { background: #fff8e1; color: #f57f17; }
-    .tag-default { background: #f0f0f0; color: #555; }
-
-    .card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #1a2e1a;
-      margin-bottom: 6px;
-    }
-
-    .card-latin {
-      font-size: 0.78rem;
-      font-style: italic;
-      color: #7a9a7a;
-      margin-bottom: 10px;
-    }
-
-    .card-notes {
-      font-size: 0.83rem;
-      color: #4a6a4a;
-      line-height: 1.55;
-    }
-
-    /* ── Skeleton ─────────────────────────────── */
-    .skeleton-card {
-      background: #fff;
-      border: 1px solid #d4ecd4;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .sk { background: #e8f5e8; border-radius: 6px; animation: shimmer 1.4s infinite; }
-    @keyframes shimmer { 0%,100%{opacity:.5} 50%{opacity:1} }
-    .sk-img  { height: 200px; border-radius: 0; width: 100%; }
-    .sk-body { padding: 18px 20px; }
-    .sk-tag  { height: 20px; width: 60px;  margin-bottom: 12px; }
-    .sk-h    { height: 18px; width: 70%;   margin-bottom: 8px; }
-    .sk-l    { height: 13px; width: 50%;   margin-bottom: 12px; }
-    .sk-p1   { height: 11px; width: 100%;  margin-bottom: 6px; }
-    .sk-p2   { height: 11px; width: 80%; }
-
-    /* ── Error ────────────────────────────────── */
-    .error-wrap {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .error-icon { font-size: 3rem; margin-bottom: 16px; }
-    .error-title { font-size: 1.1rem; font-weight: 700; color: #c62828; }
-    .error-msg { margin-top: 8px; font-size: 0.85rem; color: #7a7a7a; }
+    .empty{grid-column:1/-1;text-align:center;padding:50px 20px;color:#7a9a7a;font-size:.9rem}
+    .empty-icon{font-size:2.5rem;margin-bottom:12px}
   </style>
 </head>
 <body>
 
 <header>
   <div class="logo">
-    <span class="logo-icon">🌿</span>
+    <span style="font-size:1.5rem">🌿</span>
     <div>
       <div>Plant Journal</div>
-      <div class="logo-sub">My personal green collection</div>
+      <div class="logo-sub">My green collection</div>
     </div>
   </div>
   <div class="api-badge" id="api-badge">connecting…</div>
@@ -259,7 +139,7 @@
 
 <div class="hero">
   <h1>My Plant Collection 🌱</h1>
-  <p>All the plants and flowers I've learned from my gardener friends</p>
+  <p>Plants and flowers sent by my gardener friends</p>
 </div>
 
 <div class="status-bar">
@@ -267,57 +147,306 @@
   <span id="status-text">Fetching plants from the database…</span>
 </div>
 
-<div class="container">
-  <div class="section-label" id="section-label">Loading…</div>
-  <div class="grid" id="plant-grid">
-    <!-- skeleton cards -->
-    <div class="skeleton-card">
-      <div class="sk sk-img"></div>
-      <div class="sk-body">
-        <div class="sk sk-tag"></div>
-        <div class="sk sk-h"></div>
-        <div class="sk sk-l"></div>
-        <div class="sk sk-p1"></div>
-        <div class="sk sk-p2"></div>
+<div class="page">
+
+  <!-- ── FORM ──────────────────────────────────────── -->
+  <div class="form-panel">
+    <div class="form-title">🌱 Add a New Plant</div>
+
+    <div class="field">
+      <label>Flower / Plant Name</label>
+      <input type="text" id="f-name" placeholder="e.g. Rose, Tulip, Neem…"/>
+    </div>
+
+    <div class="field">
+      <label>Latin Name <span style="font-weight:400;color:#aaa">(optional)</span></label>
+      <input type="text" id="f-latin" placeholder="e.g. Rosa canina"/>
+    </div>
+
+    <div class="field">
+      <label>Category</label>
+      <div class="pill-group" id="tag-group">
+        <div class="pill active" data-val="flower">🌸 Flower</div>
+        <div class="pill" data-val="herb">🌿 Herb</div>
+        <div class="pill" data-val="tree">🌳 Tree</div>
+        <div class="pill" data-val="shrub">🌱 Shrub</div>
       </div>
     </div>
-    <div class="skeleton-card">
-      <div class="sk sk-img"></div>
-      <div class="sk-body">
-        <div class="sk sk-tag"></div>
-        <div class="sk sk-h"></div>
-        <div class="sk sk-l"></div>
-        <div class="sk sk-p1"></div>
-        <div class="sk sk-p2"></div>
+
+    <div class="field">
+      <label>Blooms in</label>
+      <div class="pill-group" id="season-group">
+        <div class="pill season-spring" data-val="Spring">🌸 Spring</div>
+        <div class="pill season-summer" data-val="Summer">☀️ Summer</div>
+        <div class="pill season-autumn" data-val="Autumn">🍂 Autumn</div>
+        <div class="pill season-winter" data-val="Winter">❄️ Winter</div>
       </div>
     </div>
-    <div class="skeleton-card">
-      <div class="sk sk-img"></div>
-      <div class="sk-body">
-        <div class="sk sk-tag"></div>
-        <div class="sk sk-h"></div>
-        <div class="sk sk-l"></div>
-        <div class="sk sk-p1"></div>
-        <div class="sk sk-p2"></div>
+
+    <div class="field">
+      <label>Special Features</label>
+      <div class="pill-group" id="feat-group">
+        <div class="pill feat-pill" data-val="fragrant">🌸 Fragrant</div>
+        <div class="pill feat-pill" data-val="edible">🍃 Edible</div>
+        <div class="pill feat-pill" data-val="attracts bees">🐝 Bees</div>
+        <div class="pill feat-pill" data-val="rare">💎 Rare</div>
+        <div class="pill feat-pill" data-val="medicinal">💊 Medicinal</div>
+        <div class="pill feat-pill" data-val="thorny">🌵 Thorny</div>
       </div>
+    </div>
+
+    <div class="field">
+      <label>Water Requirement</label>
+      <div class="pill-group" id="water-group">
+        <div class="pill water-low" data-val="low">💧 Low</div>
+        <div class="pill water-medium active" data-val="medium">💧💧 Medium</div>
+        <div class="pill water-high" data-val="high">💧💧💧 High</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Where Spotted</label>
+      <div class="pill-group" id="spot-group">
+        <div class="pill spot-pill" data-val="garden">🏡 Garden</div>
+        <div class="pill spot-pill" data-val="park">🌳 Park</div>
+        <div class="pill spot-pill" data-val="pot">🪴 Pot</div>
+        <div class="pill spot-pill" data-val="wild">🌾 Wild</div>
+        <div class="pill spot-pill" data-val="nursery">🛒 Nursery</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Sent by</label>
+      <input type="text" id="f-sentby" placeholder="Which friend told you about it?"/>
+    </div>
+
+    <div class="field">
+      <label>Your Note</label>
+      <input type="text" id="f-notes" placeholder="Anything to remember…"/>
+    </div>
+
+    <!-- ── IMAGE UPLOAD ─────────────────────────── -->
+    <div class="field">
+      <label>Photo</label>
+
+      <!-- Drop zone -->
+      <div class="upload-box" id="upload-box">
+        <input type="file" id="f-image" accept="image/*"/>
+        <div class="upload-icon">📷</div>
+        <div class="upload-label">Click or drag a photo here</div>
+        <div class="upload-sub">JPG, PNG, WEBP — max 10 MB</div>
+      </div>
+
+      <!-- Preview -->
+      <div class="img-preview-wrap" id="preview-wrap" style="display:none">
+        <img id="img-preview" alt="preview"/>
+        <button class="img-remove" id="img-remove" title="Remove photo">✕</button>
+      </div>
+
+      <!-- Upload progress -->
+      <div class="upload-progress" id="upload-progress">
+        <div class="spinner"></div>
+        <span id="upload-status">Uploading to S3…</span>
+      </div>
+    </div>
+
+    <button class="btn-add" id="btn-add">🌱 Add to Journal</button>
+    <div class="form-msg" id="form-msg"></div>
+  </div>
+
+  <!-- ── GRID ──────────────────────────────────────── -->
+  <div>
+    <div class="section-label" id="section-label">Loading plants…</div>
+    <div class="grid" id="plant-grid">
+      <div class="skeleton-card"><div class="sk sk-img"></div><div class="sk-body"><div class="sk sk-tag"></div><div class="sk sk-h"></div><div class="sk sk-l"></div><div class="sk sk-p"></div></div></div>
+      <div class="skeleton-card"><div class="sk sk-img"></div><div class="sk-body"><div class="sk sk-tag"></div><div class="sk sk-h"></div><div class="sk sk-l"></div><div class="sk sk-p"></div></div></div>
+      <div class="skeleton-card"><div class="sk sk-img"></div><div class="sk-body"><div class="sk sk-tag"></div><div class="sk sk-h"></div><div class="sk sk-l"></div><div class="sk sk-p"></div></div></div>
     </div>
   </div>
 </div>
 
 <script>
-  const tagClass = {
-    flower: 'tag-flower',
-    herb:   'tag-herb',
-    tree:   'tag-tree',
-    shrub:  'tag-shrub',
-  };
+  // ── Pill selection helpers ────────────────────────
+  function singleSelect(id) {
+    document.getElementById(id).querySelectorAll('.pill').forEach(p =>
+      p.addEventListener('click', () => {
+        document.getElementById(id).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+        p.classList.add('active');
+      })
+    );
+  }
+  function multiSelect(id) {
+    document.getElementById(id).querySelectorAll('.pill').forEach(p =>
+      p.addEventListener('click', () => p.classList.toggle('active'))
+    );
+  }
+  function getOne(id)    { const a = document.getElementById(id).querySelector('.pill.active'); return a ? a.dataset.val : null; }
+  function getMany(id)   { return [...document.getElementById(id).querySelectorAll('.pill.active')].map(p => p.dataset.val); }
+  function resetPills(id, defaultIndex = -1) {
+    document.getElementById(id).querySelectorAll('.pill').forEach((p, i) =>
+      p.classList.toggle('active', i === defaultIndex)
+    );
+  }
 
-  const tagEmoji = {
-    flower: '🌸',
-    herb:   '🌿',
-    tree:   '🌳',
-    shrub:  '🌱',
-  };
+  singleSelect('tag-group');
+  singleSelect('water-group');
+  singleSelect('spot-group');
+  multiSelect('season-group');
+  multiSelect('feat-group');
+
+  // ── Image upload & preview ────────────────────────
+  const fileInput    = document.getElementById('f-image');
+  const uploadBox    = document.getElementById('upload-box');
+  const previewWrap  = document.getElementById('preview-wrap');
+  const imgPreview   = document.getElementById('img-preview');
+  const imgRemove    = document.getElementById('img-remove');
+  const uploadProg   = document.getElementById('upload-progress');
+  const uploadStatus = document.getElementById('upload-status');
+
+  let uploadedUrl = null; // S3 URL after upload completes
+
+  function showPreview(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      imgPreview.src = e.target.result;
+      previewWrap.style.display = 'flex';
+      imgRemove.style.display = 'flex';
+      uploadBox.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resetImage() {
+    fileInput.value    = '';
+    imgPreview.src     = '';
+    uploadedUrl        = null;
+    previewWrap.style.display  = 'none';
+    imgRemove.style.display    = 'none';
+    uploadBox.style.display    = 'block';
+    uploadProg.style.display   = 'none';
+  }
+
+  async function uploadToS3(file) {
+    uploadProg.style.display = 'flex';
+    uploadStatus.textContent = 'Uploading to S3…';
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || err.error || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    uploadProg.style.display = 'none';
+    return data.url;
+  }
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    showPreview(file);
+    try {
+      uploadedUrl = await uploadToS3(file);
+      uploadStatus.textContent = '✅ Uploaded!';
+    } catch (err) {
+      uploadStatus.textContent = `❌ Upload failed: ${err.message}`;
+      uploadProg.style.display = 'flex';
+      uploadedUrl = null;
+    }
+  });
+
+  imgRemove.addEventListener('click', resetImage);
+
+  // Drag and drop
+  uploadBox.addEventListener('dragover',  e => { e.preventDefault(); uploadBox.classList.add('dragover'); });
+  uploadBox.addEventListener('dragleave', () => uploadBox.classList.remove('dragover'));
+  uploadBox.addEventListener('drop', async e => {
+    e.preventDefault();
+    uploadBox.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      fileInput.files = e.dataTransfer.files;
+      showPreview(file);
+      try {
+        uploadedUrl = await uploadToS3(file);
+      } catch (err) {
+        uploadStatus.textContent = `❌ Upload failed: ${err.message}`;
+        uploadProg.style.display = 'flex';
+      }
+    }
+  });
+
+  // ── Submit form ───────────────────────────────────
+  document.getElementById('btn-add').addEventListener('click', async () => {
+    const btn  = document.getElementById('btn-add');
+    const msg  = document.getElementById('form-msg');
+    const name = document.getElementById('f-name').value.trim();
+
+    if (!name) {
+      msg.className   = 'form-msg error';
+      msg.textContent = 'Please enter a plant name.';
+      return;
+    }
+
+    if (fileInput.files[0] && !uploadedUrl) {
+      msg.className   = 'form-msg error';
+      msg.textContent = 'Please wait for the image to finish uploading.';
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = 'Saving…';
+    msg.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/plants', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          latin_name:       document.getElementById('f-latin').value.trim()   || null,
+          tag:              getOne('tag-group')   || 'flower',
+          bloom_seasons:    getMany('season-group'),
+          special_features: getMany('feat-group'),
+          water_req:        getOne('water-group') || 'medium',
+          spotted_at:       getOne('spot-group')  || null,
+          sent_by:          document.getElementById('f-sentby').value.trim()  || null,
+          notes:            document.getElementById('f-notes').value.trim()   || null,
+          image_url:        uploadedUrl,
+        })
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      msg.className   = 'form-msg success';
+      msg.textContent = `✅ ${name} added to your journal!`;
+
+      // reset form
+      ['f-name','f-latin','f-sentby','f-notes'].forEach(id => document.getElementById(id).value = '');
+      resetImage();
+      resetPills('tag-group', 0);
+      resetPills('water-group', 1);
+      resetPills('season-group');
+      resetPills('feat-group');
+      resetPills('spot-group');
+
+      loadPlants();
+    } catch (err) {
+      msg.className   = 'form-msg error';
+      msg.textContent = `❌ Failed: ${err.message}`;
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = '🌱 Add to Journal';
+    }
+  });
+
+  // ── Load & render plant grid ──────────────────────
+  const tagBadge   = { flower:'badge-flower', herb:'badge-herb', tree:'badge-tree', shrub:'badge-shrub' };
+  const tagEmoji   = { flower:'🌸', herb:'🌿', tree:'🌳', shrub:'🌱' };
+  const waterBadge = { low:'badge-water-low', medium:'badge-water-medium', high:'badge-water-high' };
+  const waterLabel = { low:'💧 Low', medium:'💧💧 Medium', high:'💧💧💧 High' };
 
   async function loadPlants() {
     const grid   = document.getElementById('plant-grid');
@@ -331,53 +460,55 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // update status
-      dot.classList.remove('pulse');
-      dot.classList.add('green');
-      status.textContent = `${data.length} plants loaded from database`;
-      badge.textContent  = '✓ API connected';
-      badge.style.background = '#163820';
-      badge.style.color      = '#6fcf7f';
-      badge.style.border     = '1px solid #2d6b3a';
+      dot.classList.remove('pulse'); dot.classList.add('green');
+      status.textContent = `${data.length} plants in your journal`;
+      badge.textContent  = '✓ connected';
+      badge.style.cssText = 'background:#163820;color:#6fcf7f;border:1px solid #2d6b3a';
       label.textContent  = `All plants (${data.length})`;
 
+      if (!data.length) {
+        grid.innerHTML = `<div class="empty"><div class="empty-icon">🌱</div>No plants yet — add your first one!</div>`;
+        return;
+      }
+
       grid.innerHTML = data.map(p => {
-        const tc = tagClass[p.tag] || 'tag-default';
-        const te = tagEmoji[p.tag] || '🌿';
-        const imgHtml = p.image_url
-          ? `<img class="card-img" src="${p.image_url}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-          : '';
-        const placeholderStyle = p.image_url ? 'display:none' : '';
-        return `
-          <div class="card">
-            ${imgHtml}
-            <div class="card-img-placeholder" style="${placeholderStyle}">${te}</div>
-            <div class="card-body">
-              <span class="tag ${tc}">${te} ${p.tag}</span>
-              <div class="card-name">${p.name}</div>
-              ${p.latin_name ? `<div class="card-latin">${p.latin_name}</div>` : ''}
-              <div class="card-notes">${p.notes}</div>
+        const tc    = tagBadge[p.tag]      || 'badge-default';
+        const te    = tagEmoji[p.tag]      || '🌿';
+        const wc    = waterBadge[p.water_req] || '';
+        const wl    = waterLabel[p.water_req] || '';
+        const seasons = Array.isArray(p.bloom_seasons) && p.bloom_seasons.length ? '🌤️ ' + p.bloom_seasons.join(' · ') : '';
+        const feats   = Array.isArray(p.special_features) && p.special_features.length
+          ? p.special_features.map(f => `<span class="badge" style="background:#e0f2f1;color:#00695c">${f}</span>`).join('') : '';
+
+        return `<div class="card">
+          ${p.image_url
+            ? `<img class="card-img" src="${p.image_url}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${te}</div>'">`
+            : `<div class="card-img-placeholder">${te}</div>`}
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="badge ${tc}">${te} ${p.tag}</span>
+              ${wl ? `<span class="badge ${wc}">${wl}</span>` : ''}
+              ${feats}
             </div>
-          </div>`;
+            <div class="card-name">${p.name}</div>
+            ${p.latin_name ? `<div class="card-latin">${p.latin_name}</div>` : ''}
+            <div class="card-meta">
+              ${p.sent_by    ? `<span>👩‍🌾 ${p.sent_by}</span>`    : ''}
+              ${p.spotted_at ? `<span>📍 ${p.spotted_at}</span>` : ''}
+            </div>
+            ${p.notes   ? `<div class="card-notes">${p.notes}</div>`     : ''}
+            ${seasons   ? `<div class="card-seasons">${seasons}</div>`   : ''}
+          </div>
+        </div>`;
       }).join('');
 
     } catch (err) {
-      dot.classList.remove('pulse');
-      dot.classList.add('red');
-      status.textContent = `Could not reach backend: ${err.message}`;
-      badge.textContent  = '✗ API error';
-      badge.style.background = '#3e1a1a';
-      badge.style.color      = '#ef9a9a';
-      badge.style.border     = '1px solid #7a3a3a';
-      label.textContent = 'Error';
-
-      grid.innerHTML = `
-        <div class="error-wrap">
-          <div class="error-icon">🥀</div>
-          <div class="error-title">Could not load plants</div>
-          <div class="error-msg">${err.message}</div>
-          <div class="error-msg" style="margin-top:6px">Check that the backend container is running.</div>
-        </div>`;
+      dot.classList.remove('pulse'); dot.classList.add('red');
+      status.textContent  = `Could not reach backend: ${err.message}`;
+      badge.textContent   = '✗ API error';
+      badge.style.cssText = 'background:#3e1a1a;color:#ef9a9a;border:1px solid #7a3a3a';
+      label.textContent   = 'Error';
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">🥀</div><strong>Could not load plants</strong><br><span style="font-size:.8rem">${err.message}</span></div>`;
     }
   }
 

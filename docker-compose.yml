@@ -36,10 +36,12 @@ services:
     environment:
       DB_HOST:     postgres        # service name = hostname inside Docker network
       DB_PORT:     5432
-      DB_NAME:     planteks
-      DB_USER:     planteks
-      DB_PASSWORD: planteks123
+      DB_NAME:     plantjournal
+      DB_USER:     plantjournal
+      DB_PASSWORD: plantjournal123
       DB_SSL: "false"
+      S3_BUCKET:   "plantjournal-pics"       # your bucket name
+      AWS_REGION:  "us-east-1"              # your region
     ports:
       - "3000:3000"               # expose for local testing: curl http://localhost:3000/api/products
     networks:
