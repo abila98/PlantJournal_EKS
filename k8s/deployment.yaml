@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plantjournal-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plantjournal
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: plantjournal
+        component: frontend
+    spec:
+      containers:
+      - name: plantjournal-frontend-container
+        image: 417425906408.dkr.ecr.us-east-1.amazonaws.com/plantjournal-frontend:latest
+        env:
+        - name: MY_ENV_VAR
+          value: "my_value"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plantjournal-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plantjournal
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: plantjournal
+        component: backend
+    spec:
+      containers:
+      - name: plantjournal-backend-container
+        image: 417425906408.dkr.ecr.us-east-1.amazonaws.com/plantjournal-backend:latest
+        env:
+        - name: DB_HOST
+          value: "postgres"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "plantjournal"
+        - name: DB_USER
+          value: "plantjournal"
+        - name: DB_PASSWORD
+          value: "plantjournal123"
+        - name: DB_SSL
+          value: "false"
+        - name: S3_BUCKET
+          value: "plantjournal-pics"
+        - name: AWS_REGION
+          value: "us-east-1"
+
