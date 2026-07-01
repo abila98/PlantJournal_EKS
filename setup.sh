@@ -52,7 +52,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 echo "  Docker Compose installed: $(docker-compose --version)"
 
 # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
-ARCH=arm64
+ARCH=amd64
 PLATFORM=$(uname -s)_$ARCH
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 # (Optional) Verify checksum
@@ -66,5 +66,11 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 
+#Install helm
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
+chmod 700 get_helm.sh
+./get_helm.sh
+
+
 #Install postgres client
-sudo dnf install postgresql18*
+sudo dnf install postgresql18* -y
