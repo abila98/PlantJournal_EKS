@@ -1,0 +1,12 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: mycluster
+  region: us-west-1
+
+iam:
+  podIdentityAssociations:
+    - namespace: default
+      serviceAccountName: plantjournal-sa
+      roleARN: arn:aws:iam::417425906408:role/PlantJournalS3Role

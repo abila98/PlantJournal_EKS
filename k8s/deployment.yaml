@@ -17,9 +17,6 @@ spec:
       containers:
       - name: plantjournal-frontend-container
         image: 417425906408.dkr.ecr.us-east-1.amazonaws.com/plantjournal-frontend:latest
-        env:
-        - name: MY_ENV_VAR
-          value: "my_value"
 ---
 
 apiVersion: apps/v1
@@ -38,6 +35,7 @@ spec:
         app: plantjournal
         component: backend
     spec:
+      serviceAccountName: plantjournal-sa
       containers:
       - name: plantjournal-backend-container
         image: 417425906408.dkr.ecr.us-east-1.amazonaws.com/plantjournal-backend:latest

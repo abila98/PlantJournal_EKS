@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: backend-config
 data:
-  DB_HOST: database-1.cenaeq0sc7dt.us-east-1.rds.amazonaws.com
+  DB_HOST: database-1.c7qoiceq0s1e.us-west-1.rds.amazonaws.com
   DB_PORT: "5432"
   DB_NAME: postgres
   DB_SSL: "true"
-  AWS_REGION: us-east-1
-  S3_BUCKET: plantjournal-pics
+  AWS_REGION: us-west-1
+  S3_BUCKET: plantjournal-pictures

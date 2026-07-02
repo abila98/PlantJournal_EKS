@@ -1,0 +1,55 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: mycluster          # <-- change this
+  region: us-west-1            # <-- change to your region
+  version: "1.33"                # <-- pick your desired k8s version
+
+# ---- Use your EXISTING VPC/subnets instead of letting eksctl create a new VPC ----
+vpc:
+  id: "vpc-08cd21018ad7c8d73"   # <-- your existing VPC ID
+  cidr: "10.0.0.0/16"           # <-- must match your VPC's CIDR
+  subnets:
+    private:
+      us-west-1a:
+        id: "subnet-07d91613ff28be7ef"   # <-- existing private subnet in AZ-a
+      us-west-1c:
+        id: "subnet-069b5653ca03ebce2"   # <-- existing private subnet in AZ-b
+    public:
+      us-west-1a:
+        id: "subnet-0d0331ebfbc0c236c"   # <-- existing public subnet in AZ-a
+      us-west-1c:
+        id: "subnet-055a0001bd0ef2b9d"   # <-- existing public subnet in AZ-b
+
+  # If you don't want eksctl to touch route tables / NAT / IGW at all
+  # (since you already manage networking yourself), keep these:
+  autoAllocateIPv6: false
+  nat:
+    gateway: Disable            # you already manage NAT (regional/zonal) yourself
+
+# ---- IAM ----
+iam:
+  withOIDC: true                 # needed for IRSA (service account IAM roles)
+
+# ---- Managed node group(s) ----
+managedNodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    minSize: 1
+    maxSize: 1
+    desiredCapacity: 1
+    privateNetworking: true       # nodes launch in the PRIVATE subnets above
+    volumeSize: 30
+    ssh:
+      allow: false                # set true + publicKeyName if you need SSH
+    labels:
+      role: worker
+    tags:
+      Environment: dev
+
+# ---- CloudWatch logging (optional but recommended) ----
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["audit", "authenticator", "api"]
+
