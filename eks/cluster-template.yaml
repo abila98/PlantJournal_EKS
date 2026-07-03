@@ -8,19 +8,19 @@ metadata:
 
 # ---- Use your EXISTING VPC/subnets instead of letting eksctl create a new VPC ----
 vpc:
-  id: vpc-01c6e1b7c8c77a3b3   # <-- your existing VPC ID
+  id: ${vpc_id}   # <-- your existing VPC ID
   cidr: "10.0.0.0/16"           # <-- must match your VPC's CIDR
   subnets:
     private:
       us-west-1a:
-        id: subnet-0d6ebaece579cd9eb   # <-- existing private subnet in AZ-a
+        id: ${PRIVATE_SN_1}   # <-- existing private subnet in AZ-a
       us-west-1c:
-        id: subnet-05f77f49a938205f6   # <-- existing private subnet in AZ-b
+        id: ${PRIVATE_SN_2}   # <-- existing private subnet in AZ-b
     public:
       us-west-1a:
-        id: subnet-00089d79a134722b5   # <-- existing public subnet in AZ-a
+        id: ${PUBLIC_SN_1}   # <-- existing public subnet in AZ-a
       us-west-1c:
-        id: subnet-016f165ee81b78ecf   # <-- existing public subnet in AZ-b
+        id: ${PUBLIC_SN_2}   # <-- existing public subnet in AZ-b
 
   # If you don't want eksctl to touch route tables / NAT / IGW at all
   # (since you already manage networking yourself), keep these:
